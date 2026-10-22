@@ -3,7 +3,7 @@
 const LANGUAGES={fr:{label:'FR',name:'Français'},en:{label:'EN',name:'English'}};
 const TRANSLATIONS={
   fr:{
-    title:'ONZE. — Votre équipe, votre jeu.',description:'Créez vos compositions de football et de rugby, personnalisez les maillots et partagez votre équipe.',
+    title:'SQUADRAW. — Votre équipe, votre jeu.',description:'Créez vos compositions de football et de rugby, personnalisez les maillots et partagez votre équipe.',
     tagline:'Votre équipe, votre jeu.',language:'Langue du site',saved:'Enregistré sur cet appareil',saveFallback:'Utilisez « Sauvegarder »',export:'Exporter l’image',
     eyebrow:'Le studio des jours de match',headline:'Votre vision.',headlineAccent:'Votre équipe.',intro:'Du premier nom au dernier changement. Le terrain est à vous.',local:'100 % local · sans compte',
     sport:'Sport',football:'Football',rugby:'Rugby',rugbyFormat:'Format de rugby',rugby7:'Rugby à 7',rugby13:'Rugby à XIII',rugby15:'Rugby à XV',rugby7Short:'À 7',rugby13Short:'À 13',rugby15Short:'À 15',
@@ -25,7 +25,7 @@ const TRANSLATIONS={
     'short.PG':'PG','short.TAL':'TAL','short.PD':'PD','short.LOCK':'2L','short.FL':'3L','short.N8':'N° 8','short.DM':'DM','short.DO':'DO','short.AIL':'AIL','short.C':'C','short.AR':'AR','short.PIL':'PIL','short.L13':'3L','role.SO':'Demi d’ouverture','short.SO':'DO'
   },
   en:{
-    title:'ONZE. — Your team, your game.',description:'Build football and rugby lineups, customise your kits and share your team.',
+    title:'SQUADRAW. — Your team, your game.',description:'Build football and rugby lineups, customise your kits and share your team.',
     tagline:'Your team, your game.',language:'Site language',saved:'Saved on this device',saveFallback:'Use “Save file”',export:'Export image',
     eyebrow:'The matchday studio',headline:'Your vision.',headlineAccent:'Your team.',intro:'From the first name to the final substitution. The pitch is yours.',local:'100% local · no account',
     sport:'Sport',football:'Football',rugby:'Rugby',rugbyFormat:'Rugby format',rugby7:'Rugby sevens',rugby13:'Rugby league · 13',rugby15:'Rugby union · 15',rugby7Short:'7-a-side',rugby13Short:'13-a-side',rugby15Short:'15-a-side',
