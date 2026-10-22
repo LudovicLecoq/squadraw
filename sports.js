@@ -40,7 +40,7 @@ function initialState(mode='football'){
 function validateState(data){
   const invalid=()=>{throw new Error('Invalid lineup');};
   if(!data||![1,2,3].includes(data.version))return invalid();
-  const mode=data.version<3?'football':data.mode,config=SPORTS[mode];
+  const mode=data.version<3?'football':data.mode,config=Object.hasOwn(SPORTS,mode)?SPORTS[mode]:null;
   const color=x=>typeof x==='string'&&/^#[0-9a-f]{6}$/i.test(x);
   if(!config||typeof data.team!=='string'||data.team.length>45||!Array.isArray(data.players)||data.players.length!==config.count||!data.kit||![data.kit.body,data.kit.sleeve,data.kit.accent,data.keeper].every(color)||!['plain','stripes','hoops','sash'].includes(data.kit.pattern))return invalid();
   if(mode==='football'?!Object.hasOwn(FORMATIONS,data.formation):data.formation!=='standard')return invalid();

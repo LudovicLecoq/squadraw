@@ -3,7 +3,7 @@ const path=require('node:path');
 const read=relative=>fs.readFileSync(path.join(__dirname,'..',relative),'utf8').replace(/\r\n/g,'\n');
 const modelCode=read('sports.js');
 const context=vm.createContext({});
-vm.runInContext(modelCode+'\nthis.api={SPORTS,PRESETS,initialState,initialWorkspace,validateState,validateWorkspace,isKeeper,canSubstitute,swapSubstitute};',context);
+vm.runInContext(modelCode+'\nthis.api={escapeXml,SPORTS,PRESETS,initialState,initialWorkspace,validateState,validateWorkspace,isKeeper,canSubstitute,swapSubstitute};',context);
 const m=context.api;
 for(const fixture of ['football-v1.json','football-v2.json']){
   const old=JSON.parse(read('tests/fixtures/'+fixture));old.players[3].name='Gardé & conservé';old.players[3].x=41.25;old.team='Équipe sauvegardée';
@@ -43,4 +43,15 @@ assert.deepEqual(scripts.map(match=>match[1]),['i18n.js','sports.js','graphics.j
 for(const [,file] of scripts)assert.ok(fs.existsSync(path.join(__dirname,'..',file)),'Missing companion script: '+file);
 const markup=html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,'');
 const ids=[...markup.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);assert.equal(ids.length,new Set(ids).size);
-console.log('PASS: v1/v2 save migration, four independent lineups, count/position validation, goalkeeper swaps and JSON round-trips, translation parity, unchanged jerseys, local script references, syntax and unique HTML IDs.');
+const hostile=m.initialState();
+for(const patch of [s=>{s.kit.body='#fff" onload="alert(1)';},s=>{s.keeper='red';},s=>{s.kit.pattern='<script>';},s=>{s.players[0].number='1<b>';},s=>{s.bench[0].number='7"';},s=>{s.players[0].name='x'.repeat(31);},s=>{s.team='x'.repeat(46);},s=>{s.formation='__proto__';},s=>{s.mode='constructor';}]){const copy=JSON.parse(JSON.stringify(hostile));patch(copy);assert.throws(()=>m.validateState(copy));}
+const kept=m.validateState({...JSON.parse(JSON.stringify(hostile)),team:'<img src=x onerror=alert(1)>',extra:'<svg onload=alert(1)>'});assert.equal(kept.team,'<img src=x onerror=alert(1)>');assert.equal('extra' in kept,false);
+assert.equal(m.escapeXml('<a href="x">&\'</a>'),'&lt;a href=&quot;x&quot;&gt;&amp;&apos;&lt;/a&gt;');
+for(const file of ['app.js','graphics.js','i18n.js','sports.js'])assert.doesNotMatch(read(file),/\beval\(|new Function\(|document\.write|insertAdjacentHTML|outerHTML/,file+' uses an unsafe DOM/eval API');
+const htaccess=read('.htaccess'),policy=htaccess.match(/Content-Security-Policy "([^"]+)"/)?.[1];
+assert.ok(policy,'.htaccess must send a Content-Security-Policy');assert.match(policy,/script-src 'self';/);assert.doesNotMatch(policy,/unsafe-eval|script-src[^;]*unsafe-inline/);assert.match(policy,/frame-ancestors 'none'/);assert.match(policy,/object-src 'none'/);
+for(const header of ['Strict-Transport-Security','X-Content-Type-Options','Referrer-Policy','Permissions-Policy'])assert.match(htaccess,new RegExp('Header always set '+header));
+assert.match(htaccess,/Options -Indexes/);
+for(const page of [html])for(const [,attrs,body] of page.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi))if(body.trim())assert.match(attrs,/type="application\/ld\+json"/,'Inline executable scripts are blocked by the CSP: use a local .js file.');
+assert.doesNotMatch(markup,/\son[a-z]+\s*=/i,'Inline event handlers are blocked by the CSP.');
+console.log('PASS: v1/v2 save migration, four independent lineups, count/position validation, goalkeeper swaps and JSON round-trips, translation parity, unchanged jerseys, local script references, syntax, unique HTML IDs, hostile JSON rejection and CSP/security headers.');
