@@ -4,6 +4,8 @@ const STORAGE_KEY='onze-foot-composition-v1',LANGUAGE_KEY='onze-language';
 let workspace=initialWorkspace(),state=workspace.compositions.football;
 let selected=null,history=[],future=[],editStart=null,drag=null,benchDrag=null,pendingSub=null,toastTimer,saveAvailable=true,storageReadable=true;
 try{const saved=localStorage.getItem(STORAGE_KEY);if(saved)workspace=validateWorkspace(JSON.parse(saved));state=workspace.compositions[workspace.active];}catch(error){storageReadable=false;saveAvailable=false;}
+// Each language has its own page (/ and /en/); a language chosen with the FR/EN buttons takes precedence.
+const online=/^https?:$/.test(location.protocol);if(Object.hasOwn(LANGUAGES,document.documentElement.lang))language=document.documentElement.lang;
 try{const savedLanguage=localStorage.getItem(LANGUAGE_KEY);if(Object.hasOwn(LANGUAGES,savedLanguage))language=savedLanguage;}catch(error){/* The site still works without browser storage. */}
 function config(){return SPORTS[state.mode];}
 function teamLabel(composition=state){return composition.team.trim()||t(composition.mode==='football'?'myTeam':'myRugbyTeam');}
@@ -30,12 +32,13 @@ function switchMode(mode){
   setupMode();render();save();
 }
 function applyLanguage(){
-  document.documentElement.lang=language;document.title=t('title');document.querySelector('meta[name=description]').content=t('description');
+  document.documentElement.lang=language;
   document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=t(el.dataset.i18n);});
-  for(const [key,attribute] of [['i18nAria','aria-label'],['i18nTitle','title'],['i18nPlaceholder','placeholder']])document.querySelectorAll('[data-'+key.replace(/[A-Z]/g,c=>'-'+c.toLowerCase())+']').forEach(el=>el.setAttribute(attribute,t(el.dataset[key])));
+  for(const [key,attribute] of [['i18nAria','aria-label'],['i18nTitle','title'],['i18nPlaceholder','placeholder'],['i18nContent','content']])document.querySelectorAll('[data-'+key.replace(/[A-Z]/g,c=>'-'+c.toLowerCase())+']').forEach(el=>el.setAttribute(attribute,t(el.dataset[key])));
   for(const button of $('language-switch').children)button.setAttribute('aria-pressed',String(button.dataset.language===language));
 }
-function setLanguage(next){if(next===language||!Object.hasOwn(LANGUAGES,next))return;finishEdit();if(drag)onPointerCancel();cancelBenchDrag();cancelSubstitution();language=next;try{localStorage.setItem(LANGUAGE_KEY,language);}catch(error){}$('toast').classList.remove('visible');applyLanguage();setupMode();render();saveStatus();}
+function setLanguage(next){if(next===language||!Object.hasOwn(LANGUAGES,next))return;finishEdit();if(drag)onPointerCancel();cancelBenchDrag();cancelSubstitution();language=next;try{localStorage.setItem(LANGUAGE_KEY,language);}catch(error){}$('toast').classList.remove('visible');applyLanguage();setupMode();render();saveStatus();showLanguageAddress();}
+function showLanguageAddress(){if(!online)return;try{const link=document.querySelector(`link[rel=alternate][hreflang=${language}]`);if(link)window.history.replaceState(window.history.state,'',new URL(link.href).pathname+location.hash);}catch(error){/* Keep the current address if it cannot be changed. */}}
 function setupMode(){
   const football=state.mode==='football';document.body.dataset.sport=config().sport;
   $('rugby-formats').hidden=football;$('formations').hidden=!football;$('rugby-layout-name').hidden=football;$('keeper-control').hidden=!football;
@@ -163,4 +166,4 @@ $('load-file').addEventListener('click',()=>$('file-input').click());
 $('file-input').addEventListener('change',async e=>{const file=e.target.files[0];if(!file)return;try{if(file.size>100000)throw new Error('File too large');const loaded=validateState(JSON.parse(await file.text()));if(loaded.mode!==state.mode)switchMode(loaded.mode);mutate(()=>{state=loaded;});setupMode();render();save();toast(t('fileLoaded'));}catch(error){toast(t('fileError'));}finally{e.target.value='';}});
 $('export-image').addEventListener('click',exportImage);
 window.addEventListener('pagehide',()=>{finishEdit();save();});
-applyLanguage();setupMode();render();save();if(!storageReadable)toast(t('storageError'));
+applyLanguage();showLanguageAddress();setupMode();render();save();if(!storageReadable)toast(t('storageError'));

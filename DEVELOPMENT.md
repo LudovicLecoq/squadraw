@@ -58,3 +58,21 @@ Sevens shirt numbers are editable and are not tied to fixed position numbers.
 - [World Rugby: ground markings](https://passport.world.rugby/laws-of-the-game/laws-by-number/1-the-ground/)
 - [HSBC SVNS: player positions](https://www.svns.com/en/news/897019/explained-player-positions-in-rugby-sevens)
 - [NRL: team lists and positions](https://www.nrl.com/news/2026/10/20/world-cup-team-lists-mens-round-2/)
+
+## Pages and search engines
+
+`index.html` is the French page (`/`) and the source of truth. `en/index.html`
+(`/en/`) is generated from it: run `node tools/pages.cjs` after changing the
+markup or a translation. The generator writes every `data-i18n` text and the
+translated attributes (`data-i18n-content` for meta tags, `data-i18n-href` for
+the canonical link) into the HTML, so crawlers and visitors without JavaScript
+see real content, and it rebuilds the JSON-LD (WebSite, WebApplication, FAQPage)
+from the same dictionaries. The English page loads the scripts from `../`.
+
+Online, each page starts in its own language. A language picked with the FR/EN
+buttons is remembered as before and the address switches between `/` and `/en/`
+with `history.replaceState`, without reloading. Local file copies keep switching
+in place. The `meta.*`, `guide.*` and `faq.*` keys feed the metadata and the
+guide/FAQ section below the tool. `tests/seo.cjs` (run by `tests/check.cjs`)
+fails if the generated pages are stale or if titles, descriptions, canonical,
+hreflang, Open Graph, structured data, sitemap or icons drift apart.
