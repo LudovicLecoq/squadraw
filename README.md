@@ -25,7 +25,10 @@ Les fichiers `i18n.js`, `sports.js`, `graphics.js` et `app.js` doivent rester à
 
 1. Conservez une copie de la version actuellement en ligne.
 2. Ouvrez le gestionnaire de fichiers du site dans Hostinger.
-3. Envoyez ensemble `index.html`, `i18n.js`, `sports.js`, `graphics.js` et `app.js` dans le dossier public du domaine (généralement `public_html`).
+3. Envoyez ensemble dans le dossier public du domaine (généralement `public_html`) :
+   - `index.html`, `i18n.js`, `sports.js`, `graphics.js` et `app.js` ;
+   - le dossier `en/` (version anglaise, servie sur `squadraw.com/en/`) ;
+   - `robots.txt`, `sitemap.xml`, `site.webmanifest`, `favicon.ico`, `favicon.svg`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png` et `og-image.png`.
 4. Vérifiez les changements sur [squadraw.com](https://squadraw.com/) et videz le cache Hostinger si nécessaire.
 
 Le dépôt conserve l'historique du code. Aucun déploiement automatique vers Hostinger n'est configuré.
@@ -39,7 +42,12 @@ Le dépôt conserve l'historique du code. Aucun déploiement automatique vers Ho
 | `sports.js` | Sports, formations, validation et migration des sauvegardes |
 | `graphics.js` | Maillots, écussons et terrains |
 | `app.js` | Interactions, stockage et exports |
-| `tests/check.cjs` | Vérifications de non-régression sans dépendances externes |
+| `en/index.html` | Page anglaise, générée à partir d'`index.html` |
+| `tools/pages.cjs` | Remplit les textes des pages française et anglaise pour les moteurs de recherche |
+| `robots.txt`, `sitemap.xml`, `site.webmanifest`, icônes, `og-image.png` | Référencement, favicon et aperçu de partage |
+| `tests/check.cjs` | Vérifications de non-régression sans dépendances externes (lance aussi `tests/seo.cjs`) |
+
+Après une modification d'`index.html` ou d'une traduction dans `i18n.js`, régénérez les pages avec `node tools/pages.cjs` : le texte est écrit directement dans le HTML pour que Google le lise, et `en/index.html` est mis à jour. Les vérifications échouent si cette étape est oubliée.
 
 Pour lancer les vérifications, installez Node.js puis exécutez à la racine du dépôt :
 

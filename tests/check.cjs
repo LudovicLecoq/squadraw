@@ -1,5 +1,6 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
 const path=require('node:path');
+require('./seo.cjs');
 const read=relative=>fs.readFileSync(path.join(__dirname,'..',relative),'utf8').replace(/\r\n/g,'\n');
 const modelCode=read('sports.js');
 const context=vm.createContext({});
