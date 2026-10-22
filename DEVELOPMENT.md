@@ -58,3 +58,15 @@ Sevens shirt numbers are editable and are not tied to fixed position numbers.
 - [World Rugby: ground markings](https://passport.world.rugby/laws-of-the-game/laws-by-number/1-the-ground/)
 - [HSBC SVNS: player positions](https://www.svns.com/en/news/897019/explained-player-positions-in-rugby-sevens)
 - [NRL: team lists and positions](https://www.nrl.com/news/2026/10/20/world-cup-team-lists-mens-round-2/)
+
+## Deployment
+
+Every push to `main` runs `.github/workflows/deploy-hostinger.yml`: it runs
+`tests/check.cjs`, then uploads the five site files (`index.html`, `app.js`,
+`graphics.js`, `i18n.js`, `sports.js`) to Hostinger by FTP. It can also be run
+by hand from the Actions tab ("Run workflow").
+
+Required repository secrets (Settings → Secrets and variables → Actions):
+`FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`, from hPanel → Files → FTP Accounts.
+Optional repository variable `FTP_SERVER_DIR` (default `public_html/`) if the
+FTP account does not land one level above `public_html`.
