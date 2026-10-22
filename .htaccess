@@ -1,0 +1,86 @@
+# Squadraw: Apache / LiteSpeed configuration for Hostinger (public_html/.htaccess).
+# Static site only: no PHP, no server-side code, no third-party scripts.
+
+Options -Indexes
+DirectoryIndex index.html
+ServerSignature Off
+AddDefaultCharset UTF-8
+FileETag MTime Size
+
+<IfModule mod_mime.c>
+  AddType application/manifest+json .webmanifest
+  AddType image/svg+xml .svg
+  AddType text/javascript .js
+  AddCharset UTF-8 .html .js .css .xml .txt .webmanifest .svg
+</IfModule>
+
+# ---------------------------------------------------------------------------
+# HTTPS and canonical host: http://, www. -> https://squadraw.com (301)
+# ---------------------------------------------------------------------------
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  RewriteCond %{HTTP_HOST} ^www\.squadraw\.com$ [NC]
+  RewriteRule ^ https://squadraw.com%{REQUEST_URI} [R=301,L,NE]
+
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L,NE]
+
+  # Hidden files and folders (.git, .github, .env...) except .well-known (SSL).
+  RewriteRule (^|/)\.(?!well-known/) - [F,L]
+  # Repository content that is not part of the site, if uploaded by mistake.
+  RewriteRule ^(tests|node_modules|exports|backups)(/|$) - [F,L]
+</IfModule>
+
+# Development, backup and archive files are never served.
+<FilesMatch "(?i)\.(md|cjs|mjs|json|ya?ml|zip|tar|gz|7z|rar|patch|diff|log|bak|old|orig|sql|sh|ini|env|pem|key|psd)$">
+  Require all denied
+</FilesMatch>
+<FilesMatch "^(LISEZMOI\.txt|README.*|DEVELOPMENT.*|\.htaccess|\.htpasswd)$">
+  Require all denied
+</FilesMatch>
+
+# ---------------------------------------------------------------------------
+# Security headers
+# ---------------------------------------------------------------------------
+<IfModule mod_headers.c>
+  Header always unset X-Powered-By
+  Header unset X-Powered-By
+
+  # Browsers must use HTTPS for one year (ignored by browsers over plain HTTP).
+  Header always set Strict-Transport-Security "max-age=31536000"
+
+  # Only scripts from squadraw.com run. Inline styles, data: images and the
+  # blob: image used for PNG export are allowed; inline JSON-LD is not executed
+  # so it is not affected. Add a host here before adding any third-party script.
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; manifest-src 'self'; media-src 'none'; object-src 'none'; worker-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "DENY"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "accelerometer=(), autoplay=(), camera=(), display-capture=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), usb=(), browsing-topics=()"
+  Header always set Cross-Origin-Opener-Policy "same-origin"
+  Header always set X-Permitted-Cross-Domain-Policies "none"
+</IfModule>
+
+# ---------------------------------------------------------------------------
+# Compression
+# ---------------------------------------------------------------------------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml text/javascript application/javascript application/json application/manifest+json application/xml application/rss+xml image/svg+xml image/x-icon
+</IfModule>
+
+# ---------------------------------------------------------------------------
+# Caching. Script and style names carry no version, so HTML, JS and CSS are
+# revalidated on every visit (cheap 304 responses) and a deployment is seen
+# immediately. Images and icons are cached for 30 days.
+# ---------------------------------------------------------------------------
+<IfModule mod_headers.c>
+  <FilesMatch "(?i)\.(html?|js|css|xml|txt|webmanifest)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+  <FilesMatch "(?i)\.(png|jpe?g|gif|webp|avif|svg|ico|woff2?)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+</IfModule>

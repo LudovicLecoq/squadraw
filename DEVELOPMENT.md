@@ -42,6 +42,17 @@ all four. Switching formats closes the current edit and resets undo history.
 Exports derive from the model, so collapsing the bench never hides substitutes
 from the exported image. Text is escaped before inclusion in exported SVG.
 
+## Security
+
+`.htaccess` (upload it to `public_html/` next to `index.html`) forces HTTPS and
+`https://squadraw.com`, blocks repository files (docs, tests, dotfiles,
+archives) and sends security headers, including a Content-Security-Policy that
+only runs scripts from the site itself. Keep JavaScript in local `.js` files:
+inline scripts and `onclick=` attributes are blocked (inline JSON-LD is fine).
+Before adding any third-party script, font or API, add its host to the policy.
+User text is only inserted with `textContent` or `escapeXml`, and imported JSON
+is rebuilt field by field by `validateState`.
+
 ## Checks
 
 From the repository root, run `node tests/check.cjs` for legacy
