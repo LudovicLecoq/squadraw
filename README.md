@@ -4,7 +4,7 @@ Créez des compositions de football et de rugby, déplacez les joueurs sur le te
 
 Site : [squadraw.com](https://squadraw.com/)
 
-Ce dépôt reprend la version à fichiers séparés de l'archive `ONZE-mini-site-v4.zip`, choisie comme référence pour le site hébergé sur Hostinger. L'interface de cette version porte encore le nom ONZE.
+Ce dépôt reprend la version à fichiers séparés de l'archive `ONZE-mini-site-v4.zip`, choisie comme référence pour le site hébergé sur Hostinger. L'ancien nom ONZE a été remplacé par Squadraw dans l'interface.
 
 ## Fonctionnalités
 

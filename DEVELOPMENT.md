@@ -29,7 +29,8 @@ Goalkeeper handling applies only to football.
 
 ## Saved data
 
-Keep `onze-foot-composition-v1` as the localStorage key to preserve existing users.
+Keep `onze-foot-composition-v1` and `onze-language` as localStorage keys (legacy
+name from ONZE) to preserve existing users.
 The new workspace envelope is version 3 with `active`, `lastRugby` and four
 independent `compositions`. Each composition is version 3 with a `mode` field.
 `validateWorkspace` migrates old single-lineup saves. `validateState` accepts
