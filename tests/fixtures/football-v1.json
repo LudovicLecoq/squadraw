@@ -1,0 +1,106 @@
+{
+  "version": 1,
+  "team": "Arsenal FC",
+  "formation": "4-3-3",
+  "kit": {
+    "id": "gunners",
+    "name": "Gunners · domicile",
+    "note": "Le rouge. Les manches blanches.",
+    "body": "#e63235",
+    "sleeve": "#ffffff",
+    "accent": "#ffffff",
+    "pattern": "plain",
+    "badge": true
+  },
+  "keeper": "#c9d966",
+  "players": [
+    {
+      "id": 0,
+      "name": "",
+      "number": "1",
+      "x": 50,
+      "y": 89,
+      "role": "GB"
+    },
+    {
+      "id": 1,
+      "name": "",
+      "number": "3",
+      "x": 15,
+      "y": 71,
+      "role": "DG"
+    },
+    {
+      "id": 2,
+      "name": "",
+      "number": "4",
+      "x": 38,
+      "y": 75,
+      "role": "DC"
+    },
+    {
+      "id": 3,
+      "name": "",
+      "number": "5",
+      "x": 62,
+      "y": 75,
+      "role": "DC"
+    },
+    {
+      "id": 4,
+      "name": "",
+      "number": "2",
+      "x": 85,
+      "y": 71,
+      "role": "DD"
+    },
+    {
+      "id": 5,
+      "name": "",
+      "number": "6",
+      "x": 50,
+      "y": 55,
+      "role": "MDC"
+    },
+    {
+      "id": 6,
+      "name": "",
+      "number": "8",
+      "x": 28,
+      "y": 40,
+      "role": "MC"
+    },
+    {
+      "id": 7,
+      "name": "",
+      "number": "10",
+      "x": 72,
+      "y": 40,
+      "role": "MC"
+    },
+    {
+      "id": 8,
+      "name": "",
+      "number": "11",
+      "x": 16,
+      "y": 20,
+      "role": "AG"
+    },
+    {
+      "id": 9,
+      "name": "",
+      "number": "9",
+      "x": 50,
+      "y": 16,
+      "role": "BU"
+    },
+    {
+      "id": 10,
+      "name": "",
+      "number": "7",
+      "x": 84,
+      "y": 20,
+      "role": "AD"
+    }
+  ]
+}

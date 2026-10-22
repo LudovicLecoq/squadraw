@@ -1,0 +1,89 @@
+ONZE. — Football & rugby / Football and rugby
+============================================
+
+FRANÇAIS
+
+OUVRIR LE SITE
+Décompressez le dossier, puis double-cliquez sur index.html.
+Gardez les fichiers i18n.js, sports.js, graphics.js et app.js à côté d'index.html.
+Aucune installation, aucun compte, aucune connexion Internet nécessaires.
+
+CHOISIR LE SPORT ET LA LANGUE
+- Les boutons Football / Rugby changent le sport.
+- En rugby, choisissez à 7, à 13 (XIII) ou à 15 (XV).
+- Chaque format conserve sa propre équipe, ses maillots, son banc et ses positions.
+  Vous pouvez changer de format puis revenir sans perdre votre composition.
+- FR / EN change la langue des commandes, des postes et de l'image exportée.
+  Votre choix de langue est mémorisé. Les noms saisis restent inchangés.
+
+COMPOSER L'ÉQUIPE
+- Nommez votre équipe, puis saisissez les noms et numéros des titulaires.
+- Entrée passe au joueur suivant. Vous pouvez aussi coller une liste de noms,
+  un par ligne, dans l'ordre de la liste des titulaires.
+- En football, choisissez l'une des six formations.
+- En rugby, les postes et numéros initiaux sont proposés comme point de départ ;
+  les numéros restent modifiables, notamment en rugby à 7.
+- Faites glisser les maillots sur le terrain avec la souris ou le doigt.
+- Un clic sur un maillot sélectionne le champ de son nom.
+- Choisissez un modèle de maillot ou modifiez les couleurs et le motif.
+- « Replacer les joueurs » retrouve la disposition initiale du format choisi.
+
+LE BANC ET LES GARDIENS
+- Saisissez les noms et numéros dans « Le banc de touche ».
+- La flèche ou le titre replie / déplie la saisie du banc.
+- Les remplaçants nommés restent visibles sous le terrain et dans l'export.
+- « Ajouter un joueur » permet d'aller jusqu'à 12 remplaçants ; la croix retire
+  une place. Le nombre proposé au départ n'est pas une validation réglementaire.
+- En football, chaque remplaçant dispose d'un choix « Joueur de champ / Gardien ».
+  Le gardien utilise la couleur « Maillot des gardiens », y compris dans l'export.
+- Faites glisser un remplaçant sur un titulaire, ou cliquez sur « Faire entrer »
+  puis sur le titulaire. Le sortant rejoint le banc.
+- Un gardien remplaçant remplace le gardien titulaire. Les joueurs de champ
+  remplacent les autres titulaires. Changez le rôle du remplaçant si nécessaire.
+- Annuler permet d'annuler un remplacement, une suppression ou un déplacement.
+  L'historique d'annulation repart à zéro lorsqu'on change de format.
+
+GARDER ET PARTAGER
+Les quatre compositions sont enregistrées dans ce navigateur. Le stockage local
+peut être effacé par la navigation privée, un nettoyage ou un changement d'adresse.
+« Sauvegarder » télécharge la composition du format actif en fichier .json.
+« Ouvrir » charge une composition et sélectionne automatiquement son format.
+Les anciennes sauvegardes de football sont compatibles.
+« Exporter l'image » télécharge une image PNG de 1800 pixels de large, avec le
+terrain et les remplaçants nommés, même si la saisie du banc est repliée.
+
+CLAVIER
+Tabulation : boutons, champs et joueurs.
+Entrée sur un joueur : renommer (ou effectuer le remplacement en cours).
+Flèches sur un joueur : déplacer ; Maj + flèches : déplacement plus grand.
+Ctrl + Z / Ctrl + Maj + Z : annuler / rétablir, en dehors des champs de texte.
+Échap : annuler un déplacement ou le choix d'un remplaçant.
+Entrée ou Espace sur le titre du banc : replier / déplier.
+
+ENGLISH
+
+GET STARTED
+Unzip the folder and double-click index.html. Keep i18n.js, sports.js, graphics.js
+and app.js in the same folder. No installation, account or connection is needed.
+
+- Choose Football or Rugby, then 7, 13 or 15 players for rugby.
+- Each format has its own saved team, positions, kits and substitutes.
+- FR / EN changes the interface, position labels and exported image language.
+- Enter names and numbers, or paste a list with one name per line in roster order.
+- Drag players to reposition them. Click a shirt to rename its player.
+- Choose a kit or customise its colours and pattern.
+- Add substitutes in the collapsible bench panel. Named substitutes always
+  appear below the pitch and in the exported image.
+- Football substitutes can be marked as goalkeepers. They use the goalkeeper kit
+  colour and can replace the starting goalkeeper, who then joins the bench.
+- Drag a substitute onto a starter, or choose “Bring on”, then the starter.
+- “Save file” downloads the active lineup as JSON. “Open” restores a saved lineup
+  and selects its sport. Older football saves remain compatible.
+- “Export image” downloads a PNG, including named substitutes.
+- Undo and redo work within the current format; switching formats resets history.
+
+NOTES
+The initial rugby layouts are editable lineup diagrams, not fixed tactical systems.
+The app does not enforce competition-specific squad or substitution rules.
+The default football shirt is inspired by Arsenal's home colours; this site is
+not affiliated with the club. All graphics are rendered locally.

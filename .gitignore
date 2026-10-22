@@ -1,0 +1,20 @@
+# Local dependencies and editor/system files
+node_modules/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+
+# Credentials and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Downloads and personal lineup exports
+*.zip
+exports/
+backups/

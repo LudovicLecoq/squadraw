@@ -1,0 +1,9 @@
+    function jersey(kit,number='',keeper=false){
+      const body=keeper?state.keeper:kit.body,sleeve=keeper?state.keeper:kit.sleeve,accent=keeper?contrast(state.keeper):kit.accent;
+      let pattern='';
+      if(!keeper && kit.pattern==='stripes')pattern=`<path d="M31 16h7v62h-7zm15 0h7v62h-7zm15 0h7v62h-7z" fill="${accent}"/>`;
+      if(!keeper && kit.pattern==='hoops')pattern=`<path d="M25 33h50v8H25zm0 17h50v8H25zm0 17h50v8H25z" fill="${accent}"/>`;
+      if(!keeper && kit.pattern==='sash')pattern=`<path d="m26 62 49-40v12L26 74Z" fill="${accent}"/>`;
+      const textColor=(!keeper && kit.pattern!=='plain')?'#ffffff':contrast(body);
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 90" fill="none"><path d="m34 8-17 7L3 35l18 10 5-8-2 44q26 6 52 0l-2-44 5 8 18-10-14-20-17-7-16 7Z" fill="${sleeve}" stroke="#102b25" stroke-opacity=".18" stroke-width="1.2"/><path d="m34 8 16 7 16-7 9 12-1 17 2 44q-26 6-52 0l2-44-1-17Z" fill="${body}"/>${pattern}<path d="m34 8 16 7 16-7-5-3q-11 8-22 0Z" fill="${accent}"/><path d="m39 5 11 8L61 5" stroke="#000" stroke-opacity=".15" stroke-width="2"/><path d="m6 33 17 10m54 0 17-10" stroke="${accent}" stroke-width="3"/><path d="M30 22 28 74m42-52 2 52" stroke="#fff" stroke-opacity=".12" stroke-width="2"/><path d="M27 78q23 5 46 0" stroke="#000" stroke-opacity=".08" stroke-width="2"/>${kit.badge&&!keeper?'<path d="M61 25h9v7l-4.5 4-4.5-4Z" fill="#c9ab68"/><path d="M63 29h5m-4 2h3" stroke="#fff" stroke-width="1"/>':''}${number!==''?`${!keeper&&kit.pattern!=='plain'?'<rect x="35" y="38" width="30" height="29" rx="4" fill="#26302a"/>':''}<text x="50" y="63" text-anchor="middle" font-family="Arial,sans-serif" font-size="29" font-weight="700" fill="${textColor}">${escapeXml(number)}</text>`:''}</svg>`;
+    }
