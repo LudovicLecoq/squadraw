@@ -62,6 +62,7 @@ function validateWorkspace(data){
 }
 function isKeeper(player,composition){return composition.mode==='football'&&(player.role==='GB'||player.keeper===true);}
 function canSubstitute(composition,benchIndex,playerIndex){const sub=composition.bench[benchIndex],starter=composition.players[playerIndex];return !!sub?.name.trim()&&!!starter&&(composition.mode!=='football'||isKeeper(sub,composition)===isKeeper(starter,composition));}
+function moveSubstitute(composition,from,to){const bench=composition.bench;if(!Number.isInteger(from)||!Number.isInteger(to)||from===to||!bench[from]||!bench[to])return false;bench.splice(to,0,...bench.splice(from,1));return true;}
 function swapSubstitute(composition,benchIndex,playerIndex){
   if(!canSubstitute(composition,benchIndex,playerIndex))return false;
   const starter=composition.players[playerIndex],replacement=composition.bench[benchIndex];

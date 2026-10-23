@@ -4,7 +4,7 @@ require('./seo.cjs');
 const read=relative=>fs.readFileSync(path.join(__dirname,'..',relative),'utf8').replace(/\r\n/g,'\n');
 const modelCode=read('sports.js');
 const context=vm.createContext({});
-vm.runInContext(modelCode+'\nthis.api={escapeXml,SPORTS,PRESETS,initialState,initialWorkspace,validateState,validateWorkspace,isKeeper,canSubstitute,swapSubstitute};',context);
+vm.runInContext(modelCode+'\nthis.api={escapeXml,SPORTS,PRESETS,initialState,initialWorkspace,validateState,validateWorkspace,isKeeper,canSubstitute,swapSubstitute,moveSubstitute};',context);
 const m=context.api;
 for(const fixture of ['football-v1.json','football-v2.json']){
   const old=JSON.parse(read('tests/fixtures/'+fixture));old.players[3].name='Gardé & conservé';old.players[3].x=41.25;old.team='Équipe sauvegardée';
@@ -27,6 +27,7 @@ for(const [mode,config] of Object.entries(m.SPORTS)){
   const target=mode==='football'?1:0;const outgoing=state.players[target].name,position=state.players[target].x;
   assert.equal(m.swapSubstitute(state,0,target),true);assert.equal(state.players[target].name,'Bench '+mode);assert.equal(state.bench[0].name,outgoing);assert.equal(state.players[target].x,position);
 }
+{const c=m.initialState('football');c.bench.forEach((p,i)=>p.name='S'+i);assert.equal(m.moveSubstitute(c,0,3),true);assert.equal(c.bench.map(p=>p.name).join(),'S1,S2,S3,S0,S4,S5,S6');assert.equal(m.moveSubstitute(c,3,0),true);assert.equal(c.bench[0].name,'S0');assert.equal(m.moveSubstitute(c,0,0),false);assert.equal(m.moveSubstitute(c,0,40),false);assert.equal(m.validateState(JSON.parse(JSON.stringify(c))).bench.map(p=>p.name).join(),c.bench.map(p=>p.name).join());}
 workspace.active='rugby13';workspace.lastRugby='rugby13';assert.equal(JSON.stringify(m.validateWorkspace(JSON.parse(JSON.stringify(workspace)))),JSON.stringify(workspace));
 assert.notEqual(workspace.compositions.rugby7.players[0].name,workspace.compositions.rugby15.players[0].name);
 const football=m.initialState();football.players[0].name='Raya';football.bench[0]={name:'Neto',number:'32',keeper:true};
