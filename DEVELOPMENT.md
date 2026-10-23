@@ -79,6 +79,9 @@ translated attributes (`data-i18n-content` for meta tags, `data-i18n-href` for
 the canonical link) into the HTML, so crawlers and visitors without JavaScript
 see real content, and it rebuilds the JSON-LD (WebSite, WebApplication, FAQPage)
 from the same dictionaries. The English page loads the scripts from `../`.
+Script URLs end with `?v=` and a hash of the file, so a cached old script is
+never paired with a new page; if a key is still missing from `i18n.js`, the
+browser keeps the text already written in the HTML instead of the raw key.
 
 Online, each page starts in its own language. A language picked with the FR/EN
 buttons is remembered as before and the address switches between `/` and `/en/`

@@ -4,7 +4,7 @@ const LANGUAGES={fr:{label:'FR',name:'Français'},en:{label:'EN',name:'English'}
 const TRANSLATIONS={
   fr:{
     title:'Squadraw — Composition de foot et de rugby en ligne, gratuite',description:'Créez votre composition de football ou de rugby à 7, 13 et 15 : placez les joueurs, choisissez les maillots, exportez l’image. Gratuit et sans compte.',
-    tagline:'Votre équipe, votre jeu.',language:'Langue du site',saved:'Enregistré sur cet appareil',saveFallback:'Utilisez « Sauvegarder »',export:'Exporter l’image',
+    language:'Langue du site',saved:'Enregistré sur cet appareil',saveFallback:'Utilisez « Sauvegarder »',export:'Exporter l’image',
     eyebrow:'Composition de foot et de rugby en ligne',headline:'Votre vision.',headlineAccent:'Votre équipe.',intro:'Du premier nom au dernier changement. Le terrain est à vous.',local:'100 % local · sans compte',
     sport:'Sport',football:'Football',rugby:'Rugby',rugbyFormat:'Format de rugby',rugby7:'Rugby à 7',rugby13:'Rugby à XIII',rugby15:'Rugby à XV',rugby7Short:'À 7',rugby13Short:'À 13',rugby15Short:'À 15',
     formatHint:'Une composition sauvegardée pour chaque format.',union:'Rugby à XV',league:'Rugby à XIII',sevens:'Rugby à 7',
@@ -34,7 +34,7 @@ const TRANSLATIONS={
   },
   en:{
     title:'Squadraw — Free football and rugby lineup builder',description:'Build your football, rugby sevens, league or union lineup: drag players onto the pitch, customise kits and export an image. Free, no sign-up.',
-    tagline:'Your team, your game.',language:'Site language',saved:'Saved on this device',saveFallback:'Use “Save file”',export:'Export image',
+    language:'Site language',saved:'Saved on this device',saveFallback:'Use “Save file”',export:'Export image',
     eyebrow:'Online football and rugby lineup builder',headline:'Your vision.',headlineAccent:'Your team.',intro:'From the first name to the final substitution. The pitch is yours.',local:'100% local · no account',
     sport:'Sport',football:'Football',rugby:'Rugby',rugbyFormat:'Rugby format',rugby7:'Rugby sevens',rugby13:'Rugby league · 13',rugby15:'Rugby union · 15',rugby7Short:'7-a-side',rugby13Short:'13-a-side',rugby15Short:'15-a-side',
     formatHint:'A separate saved lineup for every format.',union:'Rugby union',league:'Rugby league',sevens:'Rugby sevens',

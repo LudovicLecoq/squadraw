@@ -40,8 +40,8 @@ const jersey=text=>text.slice(text.indexOf('    function jersey('),text.indexOf(
 for(const file of ['i18n.js','sports.js','graphics.js','app.js'])new vm.Script(read(file));
 const html=read('index.html');
 const scripts=[...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"[^>]*><\/script>/g)];
-assert.deepEqual(scripts.map(match=>match[1]),['i18n.js','sports.js','graphics.js','app.js'],'The four local scripts must load in dependency order.');
-for(const [,file] of scripts)assert.ok(fs.existsSync(path.join(__dirname,'..',file)),'Missing companion script: '+file);
+assert.deepEqual(scripts.map(match=>match[1].replace(/\?v=\w+$/,'')),['i18n.js','sports.js','graphics.js','app.js'],'The four local scripts must load in dependency order.');
+for(const [,file] of scripts)assert.ok(fs.existsSync(path.join(__dirname,'..',file.replace(/\?v=\w+$/,''))),'Missing companion script: '+file);
 const markup=html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,'');
 const ids=[...markup.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);assert.equal(ids.length,new Set(ids).size);
 const hostile=m.initialState();

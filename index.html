@@ -137,7 +137,7 @@
   </defs></svg>
 
   <header class="topbar">
-    <div class="brand"><div class="brand-name" aria-label="Squadraw">SQUADRAW<span>.</span></div><span class="brand-divider"></span><span class="brand-tag" data-i18n="tagline">Votre équipe, votre jeu.</span></div>
+    <div class="brand"><div class="brand-name" aria-label="Squadraw">SQUADRAW</div></div>
     <div class="top-actions"><span class="save-state" id="save-status"><span class="save-dot"></span><span id="save-text"></span></span><div class="language-switch" id="language-switch" role="group" data-i18n-aria="language" aria-label="Langue du site"></div><button class="btn-primary" id="export-image"><svg fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-download"/></svg><span data-i18n="export">Exporter l’image</span></button></div>
   </header>
   <main>
@@ -164,7 +164,7 @@
         <div class="board" id="board"><div class="board-top"><div class="club"><div class="club-emblem" id="club-emblem" aria-hidden="true"></div><div style="min-width:0"><h2 class="club-name" id="board-team"></h2><p class="board-kicker" id="board-kicker"></p></div></div><span class="board-formation" id="board-formation"></span></div>
           <div class="pitch" id="pitch" data-i18n-aria="pitch" aria-label="Terrain : glissez les joueurs pour les déplacer. Utilisez les flèches du clavier sur un joueur pour ajuster sa position." aria-describedby="pitch-help"><svg class="pitch-art" id="pitch-art" viewBox="0 0 500 630" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"></svg><div id="players"></div></div>
           <section class="lineup-bench" aria-labelledby="lineup-bench-title"><div class="lineup-bench-heading"><h3 id="lineup-bench-title" data-i18n="substitutes">Les remplaçants</h3><span class="lineup-bench-total" id="lineup-bench-total"></span></div><ul class="lineup-bench-list" id="lineup-bench-list"></ul><p class="lineup-bench-empty" id="lineup-bench-empty" data-i18n="emptyPreview">Ajoutez les noms dans le banc de touche ci-dessous. Ils apparaîtront ici et dans votre image exportée.</p></section>
-          <div class="board-footer"><span class="mini-brand">SQUADRAW<span>.</span></span><span class="board-footer-note" id="pitch-help"><svg fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-arrow"/></svg><span data-i18n="pitchHelp">Glissez pour déplacer · cliquez pour renommer</span></span></div>
+          <div class="board-footer"><span class="mini-brand">SQUADRAW</span><span class="board-footer-note" id="pitch-help"><svg fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-arrow"/></svg><span data-i18n="pitchHelp">Glissez pour déplacer · cliquez pour renommer</span></span></div>
         </div>
         <div class="board-tools"><div class="board-tools-left"><button class="icon-btn" id="undo" data-i18n-aria="undo" aria-label="Annuler la dernière modification" data-i18n-title="undoTitle" title="Annuler (Ctrl + Z)" disabled><svg fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-undo"/></svg></button><button class="icon-btn" id="redo" data-i18n-aria="redo" aria-label="Rétablir la modification" data-i18n-title="redoTitle" title="Rétablir (Ctrl + Maj + Z)" disabled><svg fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-redo"/></svg></button><span class="tool-label" data-i18n="experiment">Libre à vous d’essayer.</span></div><button class="btn-plain restore" id="reset-positions"><svg fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-reset"/></svg><span data-i18n="reset">Replacer les joueurs</span></button></div>
         <details class="bench" id="bench-editor" open><summary class="bench-heading" id="bench-toggle"><span class="bench-title"><span class="bench-mark"><svg fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-list"/></svg></span><span class="bench-title-text" data-i18n="bench">Le banc de touche</span></span><span class="bench-heading-actions"><span class="bench-count" id="bench-count"></span><svg class="bench-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span></summary><div class="bench-content"><p class="bench-description" data-i18n="benchDescription">Saisissez vos remplaçants : ils s’affichent sous le terrain et dans l’image exportée. Glissez un maillot sur un titulaire ou cliquez sur « Faire entrer » pour effectuer un changement.</p><div class="bench-grid" id="bench-grid"></div><div class="bench-footer"><span data-i18n="benchSlogan">Le match se gagne aussi ici.</span><span data-i18n="benchLimit">Jusqu’à 12 remplaçants</span></div></div></details>
@@ -195,9 +195,9 @@ Deuxième joueur
   </main>
   <footer class="page-footer"><span data-i18n="footer">Fait pour les coachs du dimanche. Et les autres.</span><span data-i18n="footerNote">Vos joueurs, vos couleurs, votre jeu.</span></footer>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="i18n.js"></script>
-  <script src="sports.js"></script>
-  <script src="graphics.js"></script>
-  <script src="app.js"></script>
+  <script src="i18n.js?v=2e02dc9381"></script>
+  <script src="sports.js?v=cc414ab5b5"></script>
+  <script src="graphics.js?v=f21054e275"></script>
+  <script src="app.js?v=461242b25a"></script>
 </body>
 </html>
