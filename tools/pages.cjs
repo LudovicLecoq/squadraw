@@ -2,7 +2,7 @@
 // Builds the static, crawlable pages from index.html and i18n.js:
 // index.html (French, at /) and en/index.html (English, at /en/).
 // Run `node tools/pages.cjs` after changing index.html or a translation.
-const fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
+const fs=require('node:fs'),vm=require('node:vm'),path=require('node:path'),crypto=require('node:crypto');
 const root=path.join(__dirname,'..');
 const read=relative=>fs.readFileSync(path.join(root,relative),'utf8').replace(/\r\n/g,'\n');
 const PAGES={fr:'index.html',en:'en/index.html'};
@@ -28,6 +28,8 @@ function structuredData(t,code){
   return JSON.stringify(data).replace(/</g,'\\u003c');
 }
 
+const version=file=>crypto.createHash('sha256').update(read(file)).digest('hex').slice(0,10);
+
 function build(source,translations,code){
   const t=translations[code],missing=[];
   const value=key=>{if(!(key in t))missing.push(key);return t[key]??'';};
@@ -44,7 +46,8 @@ function build(source,translations,code){
     return tag;
   });
   html=html.replace(/(<script type="application\/ld\+json" id="structured-data">)[\s\S]*?(<\/script>)/,(_,open,close)=>open+structuredData(t,code)+close);
-  if(code!=='fr')html=html.replace(/<script src="([^"/]+\.js)"><\/script>/g,(_,file)=>`<script src="../${file}"></script>`);
+  // Each script URL carries a hash of its content, so browsers and server caches never pair a new page with an old script.
+  html=html.replace(/<script src="(?:\.\.\/)?([\w-]+\.js)(?:\?v=\w+)?"><\/script>/g,(_,file)=>`<script src="${code==='fr'?'':'../'}${file}?v=${version(file)}"></script>`);
   if(missing.length)throw new Error('Missing translations for '+code+': '+missing.join(', '));
   return html;
 }
@@ -57,4 +60,4 @@ function buildAll(){
 if(require.main===module){
   for(const [file,html] of Object.entries(buildAll())){fs.mkdirSync(path.dirname(path.join(root,file)),{recursive:true});fs.writeFileSync(path.join(root,file),html);console.log('Wrote '+file);}
 }
-module.exports={buildAll,PAGES,SCRIPTS,ORIGIN};
+module.exports={buildAll,version,PAGES,SCRIPTS,ORIGIN};
