@@ -1,5 +1,6 @@
 # Squadraw: Apache / LiteSpeed configuration for Hostinger (public_html/.htaccess).
-# Static site only: no PHP, no server-side code, no third-party scripts.
+# Static site only: no PHP, no server-side code. The only third-party script is
+# the cookieless Umami statistics script (see analytics.js).
 
 Options -Indexes
 DirectoryIndex index.html
@@ -51,10 +52,11 @@ FileETag MTime Size
   # Browsers must use HTTPS for one year (ignored by browsers over plain HTTP).
   Header always set Strict-Transport-Security "max-age=31536000"
 
-  # Only scripts from squadraw.com run. Inline styles, data: images and the
+  # Only scripts from squadraw.com and the Umami statistics script run (it sends
+  # visits to cloud.umami.is / api-gateway.umami.dev). Inline styles, data: images and the
   # blob: image used for PNG export are allowed; inline JSON-LD is not executed
   # so it is not affected. Add a host here before adding any third-party script.
-  Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; manifest-src 'self'; media-src 'none'; object-src 'none'; worker-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https://cloud.umami.is https://api-gateway.umami.dev; manifest-src 'self'; media-src 'none'; object-src 'none'; worker-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
 
   Header always set X-Content-Type-Options "nosniff"
   Header always set X-Frame-Options "DENY"

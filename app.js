@@ -29,7 +29,7 @@ function switchMode(mode){
   finishEdit();if(drag)onPointerCancel();cancelBenchDrag();cancelSubstitution();save();
   state=workspace.compositions[mode];workspace.active=mode;if(mode!=='football')workspace.lastRugby=mode;
   selected=null;history=[];future=[];editStart=null;$('bulk-names').value='';$('bulk-content').hidden=true;$('bulk-toggle').setAttribute('aria-expanded','false');
-  setupMode();render();save();
+  setupMode();render();save();track('sport',{mode});
 }
 function applyLanguage(){
   document.documentElement.lang=language;
@@ -39,7 +39,7 @@ function applyLanguage(){
   for(const [key,attribute] of [['i18nAria','aria-label'],['i18nTitle','title'],['i18nPlaceholder','placeholder'],['i18nContent','content']])document.querySelectorAll('[data-'+key.replace(/[A-Z]/g,c=>'-'+c.toLowerCase())+']').forEach(el=>{if(known(el.dataset[key]))el.setAttribute(attribute,t(el.dataset[key]));});
   for(const button of $('language-switch').children)button.setAttribute('aria-pressed',String(button.dataset.language===language));
 }
-function setLanguage(next){if(next===language||!Object.hasOwn(LANGUAGES,next))return;finishEdit();if(drag)onPointerCancel();cancelBenchDrag();cancelSubstitution();language=next;try{localStorage.setItem(LANGUAGE_KEY,language);}catch(error){}$('toast').classList.remove('visible');applyLanguage();setupMode();render();saveStatus();showLanguageAddress();}
+function setLanguage(next){if(next===language||!Object.hasOwn(LANGUAGES,next))return;finishEdit();if(drag)onPointerCancel();cancelBenchDrag();cancelSubstitution();language=next;try{localStorage.setItem(LANGUAGE_KEY,language);}catch(error){}$('toast').classList.remove('visible');applyLanguage();setupMode();render();saveStatus();showLanguageAddress();track('language',{language});}
 function showLanguageAddress(){if(!online)return;try{const link=document.querySelector(`link[rel=alternate][hreflang=${language}]`);if(link)window.history.replaceState(window.history.state,'',new URL(link.href).pathname+location.hash);}catch(error){/* Keep the current address if it cannot be changed. */}}
 function setupMode(){
   const football=state.mode==='football';document.body.dataset.sport=config().sport;
@@ -161,7 +161,7 @@ async function exportImage(){
     measure.font='700 30px Arial';const heading=fitText(measure,teamLabel(snapshot),490),badge=snapshot.mode==='football'?snapshot.formation:t(SPORTS[snapshot.mode].label);
     const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><rect width="900" height="${H}" fill="#1c2025"/><path d="M0 0h900v6H0Z" fill="#ff614c"/><svg x="55" y="52" width="54" height="65" viewBox="0 0 40 48">${crest().replace(/^<svg[^>]*>|<\/svg>$/g,'')}</svg><text x="128" y="81" fill="#fff" font-family="Arial,sans-serif" font-size="30" font-weight="700">${escapeXml(heading)}</text><text x="130" y="110" fill="#aeb4bd" font-family="Arial,sans-serif" font-size="12" letter-spacing="3">${escapeXml(startingLabel().toLocaleUpperCase(language))}</text><rect x="656" y="66" width="190" height="40" rx="7" fill="#181c21" stroke="#4b535d"/><text x="751" y="92" text-anchor="middle" fill="#e2e5e9" font-family="Arial,sans-serif" font-size="16">${escapeXml(badge)}</text><svg x="${px}" y="${py}" width="${pw}" height="${ph}" viewBox="0 0 500 ${SPORTS[snapshot.mode].height}" preserveAspectRatio="none">${pitchArt(snapshot.mode)}</svg>${playerSvg}${benchSvg}<text x="55" y="${H-58}" fill="#fff" font-family="Arial,sans-serif" font-size="32" font-weight="900" font-style="italic" letter-spacing="-1.5">Squadraw<tspan fill="#ff614c">.com</tspan></text><text x="846" y="${H-62}" text-anchor="end" fill="#aeb4bd" font-family="Arial,sans-serif" font-size="14">${escapeXml(t('footerNote'))}</text></svg>`;
     const img=new Image(),url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml;charset=utf-8'}));try{await new Promise((resolve,reject)=>{img.onload=resolve;img.onerror=reject;img.src=url;});ctx.drawImage(img,0,0,canvas.width,canvas.height);}finally{URL.revokeObjectURL(url);}
-    const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(!blob)throw new Error('PNG unavailable');download(blob,`squadraw-${snapshot.mode}-${filename(snapshot)}.png`);toast(t('exportDone'));
+    const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(!blob)throw new Error('PNG unavailable');download(blob,`squadraw-${snapshot.mode}-${filename(snapshot)}.png`);toast(t('exportDone'));track('export-png',{mode:snapshot.mode});
   }catch(error){toast(t('exportError'));}finally{button.disabled=false;}
 }
 // Controls are wired once; the roster and kits are rebuilt only when the mode/language changes.
@@ -179,9 +179,9 @@ $('undo').addEventListener('click',undo);$('redo').addEventListener('click',redo
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(drag)onPointerCancel();cancelBenchDrag();cancelSubstitution();return;}if((e.ctrlKey||e.metaKey)&&!['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)){if(e.key.toLowerCase()==='z'){e.preventDefault();e.shiftKey?redo():undo();}else if(e.key.toLowerCase()==='y'){e.preventDefault();redo();}}});
 $('bulk-toggle').addEventListener('click',()=>{const open=$('bulk-content').hidden;$('bulk-content').hidden=!open;$('bulk-toggle').setAttribute('aria-expanded',String(open));if(open)$('bulk-names').focus();});
 $('apply-names').addEventListener('click',()=>{const names=$('bulk-names').value.split(/\r?\n/).map(n=>n.trim()).filter(Boolean);if(!names.length){toast(t('oneName'));return;}if(names.length>state.players.length){toast(t('tooManyNames',{count:state.players.length}));return;}if(names.some(n=>n.length>30)){toast(t('longName'));return;}mutate(()=>names.forEach((name,i)=>{state.players[i].name=name;}));$('bulk-content').hidden=true;$('bulk-toggle').setAttribute('aria-expanded','false');$('bulk-names').value='';toast(t('namesAdded',{count:names.length}));});
-$('save-file').addEventListener('click',()=>{finishEdit();download(new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),`squadraw-${state.mode}-${filename()}.json`);toast(t('fileSaved'));});
+$('save-file').addEventListener('click',()=>{finishEdit();download(new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),`squadraw-${state.mode}-${filename()}.json`);toast(t('fileSaved'));track('save-json',{mode:state.mode});});
 $('load-file').addEventListener('click',()=>$('file-input').click());
-$('file-input').addEventListener('change',async e=>{const file=e.target.files[0];if(!file)return;try{if(file.size>100000)throw new Error('File too large');const loaded=validateState(JSON.parse(await file.text()));if(loaded.mode!==state.mode)switchMode(loaded.mode);mutate(()=>{state=loaded;});setupMode();render();save();toast(t('fileLoaded'));}catch(error){toast(t('fileError'));}finally{e.target.value='';}});
+$('file-input').addEventListener('change',async e=>{const file=e.target.files[0];if(!file)return;try{if(file.size>100000)throw new Error('File too large');const loaded=validateState(JSON.parse(await file.text()));if(loaded.mode!==state.mode)switchMode(loaded.mode);mutate(()=>{state=loaded;});setupMode();render();save();toast(t('fileLoaded'));track('load-json',{mode:state.mode});}catch(error){toast(t('fileError'));}finally{e.target.value='';}});
 $('export-image').addEventListener('click',exportImage);
 window.addEventListener('pagehide',()=>{finishEdit();save();});
 applyLanguage();showLanguageAddress();setupMode();render();save();if(!storageReadable)toast(t('storageError'));
