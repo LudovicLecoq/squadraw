@@ -90,3 +90,14 @@ in place. The `meta.*`, `guide.*` and `faq.*` keys feed the metadata and the
 guide/FAQ section below the tool. `tests/seo.cjs` (run by `tests/check.cjs`)
 fails if the generated pages are stale or if titles, descriptions, canonical,
 hreflang, Open Graph, structured data, sitemap or icons drift apart.
+
+## Visit statistics
+
+`analytics.js` loads [Umami Cloud](https://umami.is) (free plan), which counts
+visits without cookies or personal data, so no consent banner is required.
+Paste the website ID from the Umami dashboard into `UMAMI_WEBSITE_ID`, then run
+`node tools/pages.cjs` to refresh the script hashes. While the ID is empty
+nothing is loaded; visits are only counted on `squadraw.com`. Custom events:
+`export-png`, `save-json`, `load-json`, `sport` and `language` (with the mode or
+language only, never names). The CSP allows `cloud.umami.is` (script and data)
+and `api-gateway.umami.dev` (data); update both if the provider changes.

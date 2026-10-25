@@ -38,10 +38,10 @@ const keys=Object.keys(context.translations.fr).sort();
 for(const code of Object.keys(context.languages)){assert.deepEqual(Object.keys(context.translations[code]).sort(),keys);for(const config of Object.values(m.SPORTS))for(const row of config.positions??[])for(const prefix of ['role.','short.'])assert.ok(context.translations[code][prefix+row[2]]);}
 const graphics=read('graphics.js'),oldJersey=read('tests/fixtures/jersey-baseline.txt');
 const jersey=text=>text.slice(text.indexOf('    function jersey('),text.indexOf('    function crest('));assert.equal(jersey(graphics),oldJersey);
-for(const file of ['i18n.js','sports.js','graphics.js','app.js'])new vm.Script(read(file));
+for(const file of ['i18n.js','sports.js','graphics.js','analytics.js','app.js'])new vm.Script(read(file));
 const html=read('index.html');
 const scripts=[...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"[^>]*><\/script>/g)];
-assert.deepEqual(scripts.map(match=>match[1].replace(/\?v=\w+$/,'')),['i18n.js','sports.js','graphics.js','app.js'],'The four local scripts must load in dependency order.');
+assert.deepEqual(scripts.map(match=>match[1].replace(/\?v=\w+$/,'')),['i18n.js','sports.js','graphics.js','analytics.js','app.js'],'The five local scripts must load in dependency order.');
 for(const [,file] of scripts)assert.ok(fs.existsSync(path.join(__dirname,'..',file.replace(/\?v=\w+$/,''))),'Missing companion script: '+file);
 const markup=html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,'');
 const ids=[...markup.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);assert.equal(ids.length,new Set(ids).size);
@@ -49,9 +49,9 @@ const hostile=m.initialState();
 for(const patch of [s=>{s.kit.body='#fff" onload="alert(1)';},s=>{s.keeper='red';},s=>{s.kit.pattern='<script>';},s=>{s.players[0].number='1<b>';},s=>{s.bench[0].number='7"';},s=>{s.players[0].name='x'.repeat(31);},s=>{s.team='x'.repeat(46);},s=>{s.formation='__proto__';},s=>{s.mode='constructor';}]){const copy=JSON.parse(JSON.stringify(hostile));patch(copy);assert.throws(()=>m.validateState(copy));}
 const kept=m.validateState({...JSON.parse(JSON.stringify(hostile)),team:'<img src=x onerror=alert(1)>',extra:'<svg onload=alert(1)>'});assert.equal(kept.team,'<img src=x onerror=alert(1)>');assert.equal('extra' in kept,false);
 assert.equal(m.escapeXml('<a href="x">&\'</a>'),'&lt;a href=&quot;x&quot;&gt;&amp;&apos;&lt;/a&gt;');
-for(const file of ['app.js','graphics.js','i18n.js','sports.js'])assert.doesNotMatch(read(file),/\beval\(|new Function\(|document\.write|insertAdjacentHTML|outerHTML/,file+' uses an unsafe DOM/eval API');
+for(const file of ['app.js','analytics.js','graphics.js','i18n.js','sports.js'])assert.doesNotMatch(read(file),/\beval\(|new Function\(|document\.write|insertAdjacentHTML|outerHTML/,file+' uses an unsafe DOM/eval API');
 const htaccess=read('.htaccess'),policy=htaccess.match(/Content-Security-Policy "([^"]+)"/)?.[1];
-assert.ok(policy,'.htaccess must send a Content-Security-Policy');assert.match(policy,/script-src 'self';/);assert.doesNotMatch(policy,/unsafe-eval|script-src[^;]*unsafe-inline/);assert.match(policy,/frame-ancestors 'none'/);assert.match(policy,/object-src 'none'/);
+assert.ok(policy,'.htaccess must send a Content-Security-Policy');assert.match(policy,/script-src 'self' https:\/\/cloud\.umami\.is;/,'Only local scripts and the Umami statistics script may run.');assert.doesNotMatch(policy,/unsafe-eval|script-src[^;]*unsafe-inline/);assert.match(policy,/frame-ancestors 'none'/);assert.match(policy,/object-src 'none'/);
 for(const header of ['Strict-Transport-Security','X-Content-Type-Options','Referrer-Policy','Permissions-Policy'])assert.match(htaccess,new RegExp('Header always set '+header));
 assert.match(htaccess,/Options -Indexes/);
 for(const page of [html])for(const [,attrs,body] of page.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi))if(body.trim())assert.match(attrs,/type="application\/ld\+json"/,'Inline executable scripts are blocked by the CSP: use a local .js file.');

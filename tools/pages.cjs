@@ -6,7 +6,7 @@ const fs=require('node:fs'),vm=require('node:vm'),path=require('node:path'),cryp
 const root=path.join(__dirname,'..');
 const read=relative=>fs.readFileSync(path.join(root,relative),'utf8').replace(/\r\n/g,'\n');
 const PAGES={fr:'index.html',en:'en/index.html'};
-const SCRIPTS=['i18n.js','sports.js','graphics.js','app.js'];
+const SCRIPTS=['i18n.js','sports.js','graphics.js','analytics.js','app.js'];
 const ORIGIN='https://squadraw.com';
 
 function loadTranslations(){
